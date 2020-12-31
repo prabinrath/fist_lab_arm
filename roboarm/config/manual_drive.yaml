@@ -1,0 +1,6 @@
+robot_base:
+  wheel_controller:
+    type: "velocity_controllers/JointGroupVelocityController"
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+    publish_rate: 50
+    joints: ['front_left_wheel_joint', 'back_left_wheel_joint', 'front_right_wheel_joint', 'back_right_wheel_joint']

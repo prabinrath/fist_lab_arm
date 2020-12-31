@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- Describe URDF for Roboarm -->
+<robot name="roboarm" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Included URDF Files -->
+  <xacro:include filename="$(find roboarm)/urdf/roboarm/sensors.xacro"/>
+  <xacro:include filename="$(find roboarm)/urdf/armbot/armbot.xacro"/>
+
+  <!-- Turtlebot arm macro -->
+  <xacro:include filename="$(find roboarm)/urdf/turtlebot_arm/tbarm.xacro"/>
+  <turtlebot_arm parent="chesis" color="White" gripper_color="Green"
+                  pincher_gripper="false" turtlebot_gripper="true">
+    <origin xyz="0.1 0 0.06"/>
+  </turtlebot_arm>
+
+   <!-- Gazebo configuration for arm and cannon servos control -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <!-- <robotNamespace>/roboarm</robotNamespace> -->
+      <legacyModeNS>true</legacyModeNS>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+</robot>

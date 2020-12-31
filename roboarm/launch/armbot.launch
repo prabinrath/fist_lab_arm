@@ -1,0 +1,42 @@
+<launch>
+
+  <!-- Arguments -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="robot_name" value="armbot"/>
+  <arg name="model" default="$(find roboarm)/urdf/armbot/armbot.urdf.xacro"/>
+
+  <!-- start Gazebo with an empty world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="use_sim_time" value="true"/>
+    <arg name="debug" value="false"/>
+    <arg name="world_name" value="$(find roboarm)/worlds/simul.world"/>
+  </include>
+  
+  <!--Spawns Robot inside a Gazebo simulation -->
+  <param name="robot_description"
+        command="$(find xacro)/xacro.py $(arg model)"/>
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
+        args="-x 0.0 -y 0.0 -z 6.5 -unpause -urdf -param robot_description -model $(arg robot_name)" respawn="false">
+  </node>
+
+   <!--Spawns Controller inside a Gazebo simulation -->
+  <rosparam command="load"
+            file="$(find roboarm)/config/manual_drive.yaml"/>
+  <node name="armbot_controller_spawner" pkg="controller_manager" type="spawner"
+    ns="/robot_base" args="wheel_controller"/>
+
+  <!--Setup TF -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+  
+  <!--Setup manual control through GUI -->
+<!--   <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+    <param name="default_topic" value="/armbot_diff_drive_controller/cmd_vel"/>
+  </node>
+ -->
+</launch>

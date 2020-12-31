@@ -1,0 +1,6 @@
+turtlebot_arm:
+  arm_controller:
+    type: "position_controllers/JointGroupPositionController"
+    pid: {p: 100.0, i: 0.01, d: 10.0}
+    publish_rate: 50
+    joints: [arm_shoulder_pan_joint, arm_shoulder_lift_joint, arm_elbow_flex_joint, arm_wrist_flex_joint, gripper_joint]
