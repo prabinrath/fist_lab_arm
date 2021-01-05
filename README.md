@@ -15,7 +15,7 @@ To run the pick and place robot environment based on UR5 arm and Robotiq gripper
 `roslaunch icl_ur5_setup_gazebo icl_ur5_gripper.launch`
 
 To run the dynamic end effector stabilization environment based on UR arm mounted on Husky robot
-`roslaunch roboarm huskyarm.launch`
+`roslaunch husky_gazebo huskyarm.launch`
 
 ## Acknowledgements
 The codes in this repository have been accumulated from a number of open source repositories. Below, a few most signifiact of them are noted for reference. Many modifications were done inorder to customize the simulations according to the project requirements.

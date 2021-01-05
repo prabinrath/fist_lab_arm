@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "arm_control");
   ros::NodeHandle n;
-  ros::Publisher pub = n.advertise<sensor_msgs::JointState>("/roboarm/arm_controller/target", 100);
+  ros::Publisher pub = n.advertise<sensor_msgs::JointState>("/armbot/arm_controller/target", 100);
   ros::Rate loop_rate(15);
 
   float pan=0,shld=-1,elbow=2,wrist=-1,grip=0;

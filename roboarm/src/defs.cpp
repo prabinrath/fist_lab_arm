@@ -34,12 +34,12 @@ class Defs
     {
       push_over = 1*M_PI/180;
       flag = false;
-      joint_output_command = nh.advertise<std_msgs::Float64MultiArray>("/roboarm/arm_controller/command", 100);
-      pitch_debug = nh.advertise<std_msgs::Float64>("/roboarm/arm_controller/end_effector", 100);
-      joint_input_command.subscribe(nh, "/roboarm/arm_controller/target", 100);
-      shoulder_sub.subscribe(nh, "/roboarm/shoulder_imu", 100);
-      elbow_sub.subscribe(nh, "/roboarm/elbow_imu", 100);
-      wrist_sub.subscribe(nh, "/roboarm/wrist_imu", 100);
+      joint_output_command = nh.advertise<std_msgs::Float64MultiArray>("/armbot/arm_controller/command", 100);
+      pitch_debug = nh.advertise<std_msgs::Float64>("/armbot/arm_controller/end_effector", 100);
+      joint_input_command.subscribe(nh, "/armbot/arm_controller/target", 100);
+      shoulder_sub.subscribe(nh, "/armbot/shoulder_imu", 100);
+      elbow_sub.subscribe(nh, "/armbot/elbow_imu", 100);
+      wrist_sub.subscribe(nh, "/armbot/wrist_imu", 100);
       sync.reset(new message_filters::Synchronizer<SyncArmFeedback>(SyncArmFeedback(100), joint_input_command, shoulder_sub, elbow_sub, wrist_sub));
       sync->registerCallback(&Defs::linkFeedback,this);
       Jn.data.push_back(0);Jn.data.push_back(-1);Jn.data.push_back(2);Jn.data.push_back(-1);Jn.data.push_back(0);

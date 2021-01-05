@@ -1,11 +1,6 @@
 <launch>
 
   <!-- Arguments -->
-  <arg name="paused" default="false"/>
-  <arg name="use_sim_time" default="true"/>
-  <arg name="gui" default="true"/>
-  <arg name="headless" default="false"/>
-  <arg name="debug" default="false"/>
   <arg name="robot_name" value="armbot"/>
   <arg name="model" default="$(find roboarm)/urdf/armbot/armbot.urdf.xacro"/>
 
@@ -17,26 +12,28 @@
   </include>
   
   <!--Spawns Robot inside a Gazebo simulation -->
-  <param name="robot_description"
-        command="$(find xacro)/xacro.py $(arg model)"/>
-  <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
-        args="-x 0.0 -y 0.0 -z 6.5 -unpause -urdf -param robot_description -model $(arg robot_name)" respawn="false">
+  <param name="/armbot/robot_description"
+        command="xacro $(arg model)"/>
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)" 
+        args="-x 0.0 -y 0.0 -z 0.1 -unpause -urdf -param /armbot/robot_description -model $(arg robot_name)" respawn="false">
   </node>
 
    <!--Spawns Controller inside a Gazebo simulation -->
   <rosparam command="load"
             file="$(find roboarm)/config/manual_drive.yaml"/>
   <node name="armbot_controller_spawner" pkg="controller_manager" type="spawner"
-    ns="/robot_base" args="wheel_controller"/>
+    ns="/armbot" args="joint_state_controller arm_controller mobile_base_controller"/>
 
   <!--Setup TF -->
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" ns="/armbot">
     <param name="publish_frequency" type="double" value="30.0" />
+    <remap from="/joint_states" to="/armbot/joint_states"/>
+    <remap from="/robot_description" to="/armbot/robot_description" />
   </node>
   
   <!--Setup manual control through GUI -->
-<!--   <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
-    <param name="default_topic" value="/armbot_diff_drive_controller/cmd_vel"/>
-  </node>
- -->
+  <!-- <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+    <param name="default_topic" value="/armbot/mobile_base_controller/cmd_vel"/>
+  </node> -->
+
 </launch>
