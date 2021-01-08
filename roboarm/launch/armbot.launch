@@ -8,7 +8,9 @@
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="use_sim_time" value="true"/>
     <arg name="debug" value="false"/>
-    <arg name="world_name" value="$(find roboarm)/worlds/simul.world"/>
+    <arg name="verbose" value="true"/>
+    <!-- <arg name="world_name" value="$(find roboarm)/worlds/simul.world"/> -->
+    <arg name="world_name" value="$(find roboarm)/worlds/arena.world"/>
   </include>
   
   <!--Spawns Robot inside a Gazebo simulation -->
@@ -22,7 +24,7 @@
   <rosparam command="load"
             file="$(find roboarm)/config/manual_drive.yaml"/>
   <node name="armbot_controller_spawner" pkg="controller_manager" type="spawner"
-    ns="/armbot" args="joint_state_controller arm_controller mobile_base_controller"/>
+    ns="/armbot" args="joint_state_controller arm_trajectory_controller mobile_base_controller gripper"/>
 
   <!--Setup TF -->
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" ns="/armbot">
@@ -32,8 +34,11 @@
   </node>
   
   <!--Setup manual control through GUI -->
-  <!-- <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+  <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
     <param name="default_topic" value="/armbot/mobile_base_controller/cmd_vel"/>
-  </node> -->
+  </node>
+  <node name="rqt_joint_trajectory_controller" pkg="rqt_joint_trajectory_controller" type="rqt_joint_trajectory_controller">
+    <remap from="/robot_description" to="/armbot/robot_description" />
+  </node>
 
 </launch>

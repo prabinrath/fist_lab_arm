@@ -9,12 +9,6 @@ armbot:
     publish_rate: 50
     joints: ['front_left_wheel_joint', 'back_left_wheel_joint', 'front_right_wheel_joint', 'back_right_wheel_joint']
   
-  arm_controller:
-    type: "position_controllers/JointGroupPositionController"
-    joints: [arm_shoulder_pan_joint, arm_shoulder_lift_joint, arm_elbow_flex_joint, arm_wrist_flex_joint, gripper_joint]
-    #pid: {p: 100.0, i: 0.01, d: 10.0}
-    publish_rate: 50
-  
   mobile_base_controller:
     type: "diff_drive_controller/DiffDriveController"
     left_wheel: ['front_left_wheel_joint', 'back_left_wheel_joint']
@@ -46,3 +40,32 @@ armbot:
         max_velocity           : 4.0   # rad/s
         has_acceleration_limits: true
         max_acceleration       : 25.0   # rad/s^2
+  
+  arm_controller:
+    type: "position_controllers/JointGroupPositionController"
+    joints: [arm_shoulder_pan_joint, arm_shoulder_lift_joint, arm_elbow_flex_joint, arm_wrist_flex_joint]
+    #pid: {p: 100.0, i: 0.01, d: 10.0}
+    publish_rate: 50
+  
+  arm_trajectory_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - arm_shoulder_pan_joint
+      - arm_shoulder_lift_joint
+      - arm_elbow_flex_joint
+      - arm_wrist_flex_joint
+    constraints:
+      goal_time: 0.6
+      stopped_velocity_tolerance: 0.05
+      arm_shoulder_pan_joint: {trajectory: 0.1, goal: 0.1}
+      arm_shoulder_lift_joint: {trajectory: 0.1, goal: 0.1}
+      arm_elbow_flex_joint: {trajectory: 0.1, goal: 0.1}
+      arm_wrist_flex_joint: {trajectory: 0.1, goal: 0.1}
+      gripper_joint: {trajectory: 0.1, goal: 0.1}
+    stop_trajectory_duration: 0.5
+    state_publish_rate:  25
+    action_monitor_rate: 10
+
+  gripper:
+    type: "position_controllers/GripperActionController"
+    joint: gripper_joint
