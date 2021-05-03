@@ -105,21 +105,21 @@
   <xacro:wheel prefix="back" suffix="right" posx="-1" posy="-1"/>
 
   <xacro:include filename="$(find roboarm)/urdf/armbot/sensors.xacro"/>
-  <rgb_camera camera_name="armbot_rgb_camera" parent_link="chesis">
+  <xacro:rgb_camera camera_name="armbot_rgb_camera" parent_link="chesis">
     <box size="0.001 0.008 0.008"/>
     <origin xyz="${(chesis_length/2)*1.001} 0 ${(chesis_height/2)*0.5}" rpy="0 0 0"/>
-  </rgb_camera>
-  <depth_camera camera_name="armbot_depth_camera" parent_link="chesis">
+  </xacro:rgb_camera>
+  <xacro:depth_camera camera_name="armbot_depth_camera" parent_link="chesis">
     <box size="0.001 0.08 0.01"/>
     <origin xyz="${(chesis_length/2)*1.001} 0 0" rpy="0 0 0"/>
-  </depth_camera>
+  </xacro:depth_camera>
 
 
   <xacro:include filename="$(find roboarm)/urdf/turtlebot_arm/tbarm.xacro"/>
-  <turtlebot_arm parent="chesis" color="White" gripper_color="Green"
+  <xacro:turtlebot_arm parent="chesis" color="White" gripper_color="Green"
                   pincher_gripper="false" turtlebot_gripper="true">
     <origin xyz="0.1 0 0.06"/>
-  </turtlebot_arm>
+  </xacro:turtlebot_arm>
 
   <!-- Gazebo plugin for ROS Control -->
   <gazebo>
