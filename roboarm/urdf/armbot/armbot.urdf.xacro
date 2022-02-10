@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
-<robot name="roscontrol" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="armbot" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:property name="pi" value="3.1415" />
-  <xacro:property name="wheel_radius" value="0.15" />
-  <xacro:property name="wheel_thickness" value="0.1" />
-  <xacro:property name="chesis_length" value="0.6" />
-  <xacro:property name="chesis_breadth" value="0.4" />
-  <xacro:property name="chesis_height" value="0.2" />
+  <xacro:property name="wheel_radius" value="0.08" />
+  <xacro:property name="wheel_thickness" value="0.04" />
+  <xacro:property name="chesis_length" value="0.3" />
+  <xacro:property name="chesis_breadth" value="0.2" />
+  <xacro:property name="chesis_height" value="0.08" />
 
   <material name="blue">
     <color rgba="0 0 0.8 1"/>
@@ -34,6 +33,8 @@
     </inertial>
   </xacro:macro>
 
+  <link name="base_link"></link>
+
   <link name="chesis">
     <visual>
       <geometry>
@@ -46,8 +47,17 @@
         <box size="${chesis_length} ${chesis_breadth} ${chesis_height}"/>
       </geometry>
     </collision>
-    <xacro:box_inertia mass="10.0" x="${chesis_length}" y="${chesis_breadth}" z="${chesis_height}"/>
+    <xacro:box_inertia mass="0.5" x="${chesis_length}" y="${chesis_breadth}" z="${chesis_height}"/>
   </link>
+
+  <gazebo reference="chesis">
+       <material>Gazebo/Blue</material>
+    </gazebo>
+
+  <joint name="fixed_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="chesis"/> 
+  </joint>
 
   <xacro:macro name="wheel" params="prefix suffix posx posy">
     <link name="${prefix}_${suffix}_wheel">
@@ -64,21 +74,20 @@
           <cylinder radius="${wheel_radius}" length="${wheel_thickness}"/>
         </geometry>
       </collision>
-      <xacro:cyl_inertia mass="1" r="${wheel_radius}" h="${wheel_thickness}"/>
+      <xacro:cyl_inertia mass="0.1" r="${wheel_radius}" h="${wheel_thickness}"/>
     </link>
     <joint name="${prefix}_${suffix}_wheel_joint" type="continuous">
       <axis xyz="0 1 0" rpy="0 0 0" />
       <parent link="chesis"/>
       <child link="${prefix}_${suffix}_wheel"/>
-      <origin xyz="${0.25*posx} ${0.27*posy} 0" rpy="0 0 0"/>
+      <origin xyz="${(chesis_length*0.3)*posx} ${(chesis_breadth/2+wheel_thickness/2)*1.1*posy} 0" rpy="0 0 0"/>
+      <dynamics damping="0"/>
     </joint>
+
     <gazebo reference="${prefix}_${suffix}_wheel">
-      <mu1 value="200.0"/>
-      <mu2 value="100.0"/>
-      <kp value="10000000.0" />
-      <kd value="1.0" />
-      <material>Gazebo/Grey</material>
+       <material>Gazebo/DarkGray</material>
     </gazebo>
+
     <transmission name="${prefix}_${suffix}_wheel_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <actuator name="${prefix}_${suffix}_wheel_motor">
@@ -95,10 +104,27 @@
   <xacro:wheel prefix="back" suffix="left" posx="-1" posy="1"/>
   <xacro:wheel prefix="back" suffix="right" posx="-1" posy="-1"/>
 
+  <xacro:include filename="$(find roboarm)/urdf/armbot/sensors.xacro"/>
+  <xacro:rgb_camera camera_name="armbot_rgb_camera" parent_link="chesis">
+    <box size="0.001 0.008 0.008"/>
+    <origin xyz="${(chesis_length/2)*1.001} 0 ${(chesis_height/2)*0.5}" rpy="0 0 0"/>
+  </xacro:rgb_camera>
+  <xacro:depth_camera camera_name="armbot_depth_camera" parent_link="chesis">
+    <box size="0.001 0.08 0.01"/>
+    <origin xyz="${(chesis_length/2)*1.001} 0 0" rpy="0 0 0"/>
+  </xacro:depth_camera>
+
+
+  <xacro:include filename="$(find roboarm)/urdf/turtlebot_arm/tbarm.xacro"/>
+  <xacro:turtlebot_arm parent="chesis" color="White" gripper_color="Green"
+                  pincher_gripper="false" turtlebot_gripper="true">
+    <origin xyz="0.1 0 0.06"/>
+  </xacro:turtlebot_arm>
+
   <!-- Gazebo plugin for ROS Control -->
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-      <robotNamespace>/robot_base</robotNamespace>
+      <robotNamespace>/armbot</robotNamespace>
       <legacyModeNS>true</legacyModeNS>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
     </plugin>

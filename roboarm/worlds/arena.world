@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <model name="path">
+      <include>
+        <uri>model://path</uri>
+      </include>     
+    </model>
+
+    <model name="cube">
+      <pose>-0.08 0 0.15 0 0 0</pose>
+      <include>
+        <uri>model://wood_cube_2_5cm</uri>
+      </include>
+    </model>
+
+    <model name="walls">
+      <static>true</static>
+      <pose>0 0 0 0 0 0</pose>
+      <link name="right_wall">
+        <collision name="right_wall_collision">
+        	<pose>0 -2.8 0.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>4 0.01 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="right_wall_visual">
+        	<pose>0 -2.8 0.05 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <box>
+              <size>4 0.01 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+      <link name="left_wall">
+        <collision name="left_wall_collision">
+        	<pose>0 2.8 0.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>4 0.01 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="left_wall_visual">
+        	<pose>0 2.8 0.05 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <box>
+              <size>4 0.01 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+      <link name="front_wall">
+        <collision name="front_wall_collision">
+        	<pose>2 0 0.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.01 5.6 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="front_wall_visual">
+        	<pose>2 0 0.05 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <box>
+              <size>0.01 5.6 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+      <link name="back_wall">
+        <collision name="back_wall_collision">
+        	<pose>-2 0 0.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.01 5.6 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="back_wall_visual">
+        	<pose>-2 0 0.05 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <box>
+              <size>0.01 5.6 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0 0 0 0</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

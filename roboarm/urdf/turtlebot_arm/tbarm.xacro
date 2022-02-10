@@ -26,23 +26,23 @@
       </transmission>
     </xacro:macro>
 
-    <servo_transmission name="arm_shoulder_pan"/>
-    <servo_transmission name="arm_shoulder_lift"/>
-    <servo_transmission name="arm_elbow_flex"/>
-    <servo_transmission name="arm_wrist_flex"/>
-    <servo_transmission name="gripper"/>
+    <xacro:servo_transmission name="arm_shoulder_pan"/>
+    <xacro:servo_transmission name="arm_shoulder_lift"/>
+    <xacro:servo_transmission name="arm_elbow_flex"/>
+    <xacro:servo_transmission name="arm_wrist_flex"/>
+    <xacro:servo_transmission name="gripper"/>
 
-    <imu imu_name="shoulder_imu" parent_link="arm_shoulder_lift_link">
+    <xacro:imu imu_name="shoulder_imu" parent_link="arm_shoulder_lift_link">
         <box size="0.008 0.008 0.001"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-    </imu>
-    <imu imu_name="elbow_imu" parent_link="arm_elbow_flex_link">
+    </xacro:imu>
+    <xacro:imu imu_name="elbow_imu" parent_link="arm_elbow_flex_link">
         <box size="0.008 0.008 0.001"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-    </imu>
-    <imu imu_name="wrist_imu" parent_link="arm_wrist_flex_link">
+    </xacro:imu>
+    <xacro:imu imu_name="wrist_imu" parent_link="arm_wrist_flex_link">
         <box size="0.008 0.008 0.001"/>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-    </imu>
+    </xacro:imu>
 
 </robot>
